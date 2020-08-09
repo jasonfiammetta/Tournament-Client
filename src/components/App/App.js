@@ -8,6 +8,9 @@ import SignUp from '../auth/SignUp'
 import SignIn from '../auth/SignIn'
 import SignOut from '../auth/SignOut'
 import ChangePassword from '../auth/ChangePassword'
+import CreateTournament from '../tournaments/CreateTournament'
+import ViewTournaments from '../tournaments/ViewTournaments'
+import ViewTournament from '../tournaments/ViewTournament'
 
 class App extends Component {
   constructor () {
@@ -19,11 +22,7 @@ class App extends Component {
     }
   }
 
-  setUser = user => {
-    console.log('setting user to ', user)
-    return this.setState({ user })
-  }
-
+  setUser = user => this.setState({ user })
   clearUser = () => this.setState({ user: null })
 
   msgAlert = ({ heading, message, variant }) => {
@@ -36,7 +35,7 @@ class App extends Component {
     return (
       <Fragment>
         <Header user={user} />
-        <p>The current user is {JSON.stringify(user, null, 2)}</p>
+        <p>The current user is {JSON.stringify(user)}</p>
         {msgAlerts.map((msgAlert, index) => (
           <AutoDismissAlert
             key={index}
@@ -46,6 +45,9 @@ class App extends Component {
           />
         ))}
         <main className="container">
+          <Route exact path='' render={() => (
+            <p>Welcome home!</p>
+          )} />
           <Route path='/sign-up' render={() => (
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />
@@ -57,6 +59,15 @@ class App extends Component {
           )} />
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword msgAlert={this.msgAlert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} path='/create-tournament' render={(props) => (
+            <CreateTournament user={user} {...props} />
+          )} />
+          <Route exact path='/tournaments' render={() => (
+            <ViewTournaments />
+          )} />
+          <Route exact path='/tournaments/:id' render={(props) => (
+            <ViewTournament {...props}/>
           )} />
         </main>
       </Fragment>
