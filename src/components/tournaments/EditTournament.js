@@ -1,37 +1,73 @@
 import React, { Component } from 'react'
+// import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
-import { createTournament } from '../../api/tournaments'
+import { getTournament, editTournament } from '../../api/tournaments'
 
-class CreateTournament extends Component {
+class EditTournament extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      name: '',
-      game: '',
-      description: '',
-      players: '' // split on commas
+      tournament: null
+      // name: '',
+      // game: '',
+      // description: ''
     }
   }
 
-  handleChange = event => this.setState({
-    [event.target.name]: event.target.value
-  })
+  componentDidMount () {
+    getTournament(this.props.match.params.id)
+      .then(res => {
+        console.log('res data', res.data)
+        this.setState({ tournament: res.data })
+      })
+      .catch(console.error)
+  }
 
-  create = event => {
+  handleChange = event => {
+    event.persist()
+    this.setState(prevState => ({
+      tournament: {
+        ...prevState.tournament,
+        [event.target.name]: event.target.value
+      }
+    }))
+  }
+
+  edit = event => {
     event.preventDefault()
+    const { match, user } = this.props
 
-    createTournament(this.props.user, this.state)
-      .then(res => this.props.history.push(`/tournaments/${res.data.id}`))
+    editTournament(match.params.id, user, this.state)
+      .then(res => {
+        console.log(res.data)
+      })
       .catch(console.error)
   }
 
   render () {
-    const { name, game, description, players } = this.state
+    if (!this.props.user) {
+      return (
+        <div>
+          <p>Unauthorized.</p>
+        </div>
+      )
+    }
+
+    if (!this.state.tournament) {
+      console.log('tournament state', this.state.tournament)
+      return (
+        <div className="loading">
+          Loading...
+        </div>
+      ) // bootstrap spinner?
+    }
+
+    const { name, game, description } = this.state.tournament
 
     return (
-      <div className="create-form">
-        <Form onSubmit={this.create}>
+      <div className="edit-form">
+        <Form onSubmit={this.edit}>
           <Form.Group controlId="name">
             <Form.Label>Tournament Name</Form.Label>
             <Form.Control
@@ -62,15 +98,6 @@ class CreateTournament extends Component {
               placeholder="Enter tournament description"
               onChange={this.handleChange} />
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Players (You can add more later)</Form.Label>
-            <Form.Control
-              type="text"
-              name="players"
-              value={players}
-              placeholder="Separate names with commas, i.e. Alice, Bob, Charlie"
-              onChange={this.handleChange} />
-          </Form.Group>
           <Button variant="primary" type="submit">
             Submit
           </Button>
@@ -80,4 +107,4 @@ class CreateTournament extends Component {
   }
 }
 
-export default CreateTournament
+export default EditTournament

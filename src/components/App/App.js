@@ -11,6 +11,8 @@ import ChangePassword from '../auth/ChangePassword'
 import CreateTournament from '../tournaments/CreateTournament'
 import ViewTournaments from '../tournaments/ViewTournaments'
 import ViewTournament from '../tournaments/ViewTournament'
+import EditTournament from '../tournaments/EditTournament'
+import ViewMatch from '../tournaments/ViewMatch'
 
 class App extends Component {
   constructor () {
@@ -67,7 +69,13 @@ class App extends Component {
             <ViewTournaments />
           )} />
           <Route exact path='/tournaments/:id' render={(props) => (
-            <ViewTournament {...props}/>
+            <ViewTournament {...props} user={user} />
+          )} />
+          <Route exact path='/tournaments/:id/edit' render={(props) => (
+            <EditTournament {...props} user={user} />
+          )} />
+          <Route exact path='/tournaments/:t_id/matches/:m_id' render={(props) => (
+            <ViewMatch {...props} user={user} />
           )} />
         </main>
       </Fragment>

@@ -12,13 +12,10 @@ class ViewTournaments extends Component {
     }
   }
 
-  jsx = ''
-
   componentDidMount () {
     getTournaments()
       .then(res => {
         console.log('res data', res.data)
-        this.jsx = JSON.stringify(res.data, null, 2)
         this.setState({ tournaments: res.data })
       })
       .catch(console.error)
@@ -35,8 +32,6 @@ class ViewTournaments extends Component {
   render () {
     return (
       <div className="view">
-        <p>Here is where the tournaments go</p>
-        {this.jsx}
         <ListGroup>
           {this.getTournamentList(this.state.tournaments)}
         </ListGroup>
