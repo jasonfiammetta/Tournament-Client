@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute'
 import AutoDismissAlert from '../AutoDismissAlert/AutoDismissAlert'
@@ -48,7 +48,7 @@ class App extends Component {
         ))}
         <main className="container">
           <Route exact path='' render={() => (
-            <p>Welcome home!</p>
+            <Redirect to='/tournaments' />
           )} />
           <Route path='/sign-up' render={() => (
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />

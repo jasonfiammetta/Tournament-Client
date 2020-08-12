@@ -19,6 +19,17 @@ export const createTournament = (user, details) => {
   })
 }
 
+/* eslint-disable camelcase */
+export const addPlayers = (t_id, user, playerList) => {
+  return axios({
+    url: apiUrl + `/tournaments/${t_id}/players/`,
+    method: 'POST',
+    headers: {
+      'Authorization': `Token ${user.token}`
+    },
+    data: { player_list: cleanup(playerList) }
+  })
+}
 // Take a comma separated string and turn into array of player names
 const cleanup = players => {
   const playerList = players === '' ? []
@@ -76,7 +87,6 @@ export const deleteTournament = (id, user) => {
   })
 }
 
-/* eslint-disable camelcase */
 export const getMatch = (t_id, m_id) => {
   return axios({
     url: apiUrl + `/tournaments/${t_id}/matches/${m_id}/`,

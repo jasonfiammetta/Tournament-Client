@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getMatch } from '../../api/tournaments'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, Button } from 'react-bootstrap'
 
 class ViewMatch extends Component {
   constructor (props) {
@@ -28,10 +28,12 @@ class ViewMatch extends Component {
       <div className="match">
         <ListGroup>
           <ListGroup.Item>
-            Player 1
+            Player 1: {this.props.playerOne}
+            <Button variant="success" onClick={() => this.props.winnerIs(1)}>Advance!</Button>
           </ListGroup.Item>
           <ListGroup.Item>
-            Player 2
+            Player 2: {this.props.playerTwo}
+            <Button variant="success" onClick={() => this.props.winnerIs(2)}>Advance!</Button>
           </ListGroup.Item>
         </ListGroup>
         {tdControls}
