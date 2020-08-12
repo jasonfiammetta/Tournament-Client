@@ -12,6 +12,7 @@ import CreateTournament from '../tournaments/CreateTournament'
 import ViewTournaments from '../tournaments/ViewTournaments'
 import ViewTournament from '../tournaments/ViewTournament'
 import EditTournament from '../tournaments/EditTournament'
+import Bracket from '../tournaments/Bracket'
 import ViewMatch from '../tournaments/ViewMatch'
 
 class App extends Component {
@@ -73,6 +74,9 @@ class App extends Component {
           )} />
           <Route exact path='/tournaments/:id/edit' render={(props) => (
             <EditTournament {...props} user={user} />
+          )} />
+          <Route exact path='/tournaments/:id/bracket' render={(props) => (
+            <Bracket {...props} user={user} />
           )} />
           <Route exact path='/tournaments/:t_id/matches/:m_id' render={(props) => (
             <ViewMatch {...props} user={user} />
